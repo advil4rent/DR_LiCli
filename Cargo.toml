@@ -1,0 +1,13 @@
+[package]
+name = "decide_rs_lights"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+decide-protocol = {git = "https://github.com/melizalab/decide-rs", branch = "components"}
+tmq = { version = "0.3", features = ["zmq-vendored"] }
+tokio = { version = "1.12", features = ["full"] }
+prost = "0.9"
+prost-types = "0.9"
