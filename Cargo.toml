@@ -11,3 +11,9 @@ tmq = { version = "0.3", features = ["zmq-vendored"] }
 tokio = { version = "1.12", features = ["full"] }
 prost = "0.9"
 prost-types = "0.9"
+tracing = "0.1.30"
+
+futures = "0.3.17"
+
+[build-dependencies]
+prost-build = "0.9"

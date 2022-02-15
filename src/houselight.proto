@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+message HouseLightState {
+    bool switch = 1;
+    bool fake_clock = 2;
+    int32 brightness = 3;
+}
+message KeyState {
+    bool peck_left = 1;
+    bool peck_center = 2;
+    bool peck_right = 3;
+}
+message HouseLightParams {
+    int64 clock_interval = 1;
+}
