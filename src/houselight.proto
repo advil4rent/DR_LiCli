@@ -13,3 +13,9 @@ message KeyState {
 message HouseLightParams {
     int64 clock_interval = 1;
 }
+message LedState {
+    string led_state = 1;
+}
+
+message LedParams {
+}

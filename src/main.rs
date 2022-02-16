@@ -1,16 +1,26 @@
 use decide_protocol::{ComponentRequest, proto, PUB_ENDPOINT, RequestType};
-use tokio;
+use futures::stream::StreamExt;
 use prost::Message;
 use prost_types::Any;
-use tmq::{publish, Context, Result, subscribe, Multipart};
+use tmq::{Context, Multipart, publish, Result, subscribe};
+use tokio;
+use tracing;
+
 use decide_rs_lights::components_proto;
-use futures::stream::StreamExt;
 
 #[tokio::main]
 async fn main() {
-    decide_rs_lights::set_parameters();
-    decide_rs_lights::set_state();
-    println!("Init completed");
+    tracing_subscriber::fmt()
+        .pretty()
+        .with_thread_names(true)
+        // enable everything
+        .with_max_level(tracing::Level::TRACE)
+        // sets this to be the default, global collector for this application.
+        .init();
+    decide_rs_lights::hs_set_parameters().await;
+    decide_rs_lights::hs_set_state().await;
+    decide_rs_lights::pl_set_parameters().await;
+    decide_rs_lights::pl_set_state().await;
     let ctx = Context::new();
     let mut hs_listen = subscribe(&ctx)
         .connect(PUB_ENDPOINT).unwrap()
@@ -19,13 +29,12 @@ async fn main() {
     let mut pb_listen = subscribe(&ctx)
         .connect(PUB_ENDPOINT).unwrap()
         .subscribe(b"state/peck-keys").unwrap();
-    println!("Beginning loop");
     loop {
         tokio::select! {
             hs_state = hs_listen.next() => {
                 let hs_state = hs_state.map(|message|{
                     let mut message = message.unwrap();
-                    println!("received house-light pub");
+                    tracing::info!("received house-light pub");
                     let _topic = message.pop_front().unwrap();
                     let encoded_pub = message.pop_front().unwrap();
                     let decoded_pub = proto::Pub::decode(&encoded_pub[..]).expect("could not decode protobuf");
@@ -36,7 +45,7 @@ async fn main() {
             pb_state = pb_listen.next() => {
                 let pb_state = pb_state.map(|message|{
                     let mut message = message.unwrap();
-                    println!("received peck-keys pub");
+                    tracing::info!("received peck-keys pub");
                     let _topic = message.pop_front().unwrap();
                     let encoded_pub = message.pop_front().unwrap();
                     let decoded_pub = proto::Pub::decode(&encoded_pub[..]).expect("could not decode protobuf");
