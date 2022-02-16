@@ -1,31 +1,23 @@
 use decide_protocol::{
-    Component,
-    ComponentName, ComponentRequest, GeneralRequest, proto::{ComponentParams, Config, Pub, reply, Reply, StateChange}, PUB_ENDPOINT, REQ_ENDPOINT, Request,
+    ComponentName, ComponentRequest, proto::{ComponentParams, reply, Reply, StateChange}, REQ_ENDPOINT, Request,
     RequestType,
 };
-use futures::stream::StreamExt;
+use house_light::proto as hl_proto;
+use peckboard::proto as pb_proto;
 use prost;
-use prost::Message;
 use prost_types::Any;
-use tmq::{Context, Multipart, publish, Result, subscribe};
-use tmq::subscribe::Subscribe;
-use tokio;
+use prost::Message;
+use tmq::{Context, Multipart, Result};
 
 const HS_PARAMS_TYPE_URL: &'static str = "melizalab.org/proto/house_light_state";
 const HS_STATE_TYPE_URL: &'static str = "melizalab.org/proto/house_light_state";
-const PK_STATE_TYPE_URL: &'static str = "melizalab.org/proto/key_state";
-const PK_PARAMS_TYPE_URL: &'static str = "melizalab.org/proto/key_params";
 const PL_STATE_TYPE_URL: &'static str = "melizalab.org/proto/led_state";
 const PL_PARAMS_TYPE_URL: &'static str = "melizalab.org/proto/led_params";
-
-pub mod components_proto {
-    include!(concat!(env!("OUT_DIR"), "/_.rs"));
-}
 
 pub async fn hs_set_parameters() {
     let params = Any {
         type_url: String::from(HS_PARAMS_TYPE_URL),
-        value: components_proto::HouseLightParams {
+        value: hl_proto::Params {
             clock_interval: 300
         }.encode_to_vec(),
     };
@@ -50,7 +42,7 @@ pub async fn hs_set_parameters() {
 pub async fn hs_set_state() {
     let state = Any {
         type_url: String::from(HS_STATE_TYPE_URL),
-        value: components_proto::HouseLightState {
+        value: hl_proto::State {
             switch: true,
             fake_clock: true,
             brightness: 255,
@@ -72,7 +64,7 @@ pub async fn hs_set_state() {
 pub async fn pl_set_parameters() {
     let params = Any {
         type_url: String::from(PL_PARAMS_TYPE_URL),
-        value: components_proto::LedParams {
+        value: pb_proto::LedParams {
         }.encode_to_vec(),
     };
     let params_message = ComponentParams {
@@ -96,7 +88,7 @@ pub async fn pl_set_parameters() {
 pub async fn pl_set_state() {
     let state = Any {
         type_url: String::from(PL_STATE_TYPE_URL),
-        value: components_proto::LedState {
+        value: pb_proto::LedState {
             led_state: String::from("red")
         }.encode_to_vec(),
     };

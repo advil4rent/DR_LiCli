@@ -84,6 +84,19 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "baf1de4339761588bc0619e3cbc0120ee582ebb74b53b4efbf79117bd2da40fd"
 
 [[package]]
+name = "chrono"
+version = "0.4.19"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "670ad68c9088c2a963aaa298cb369688cf3f9465ce5e2d4ca10e6e0098a1ce73"
+dependencies = [
+ "libc",
+ "num-integer",
+ "num-traits",
+ "time",
+ "winapi",
+]
+
+[[package]]
 name = "cmake"
 version = "0.1.48"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -95,7 +108,7 @@ dependencies = [
 [[package]]
 name = "decide-protocol"
 version = "0.1.0"
-source = "git+https://github.com/melizalab/decide-rs?branch=components#5a10ca6a40a0ab2ffdb2badfb5da2a5fe1ab1695"
+source = "git+https://github.com/melizalab/decide-rs?branch=components#f2660449b21bf9462f443930c18d0e831bff31bb"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -120,6 +133,8 @@ version = "0.1.0"
 dependencies = [
  "decide-protocol",
  "futures",
+ "house_light",
+ "peckboard",
  "prost",
  "prost-build",
  "prost-types",
@@ -252,8 +267,10 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "409296415b8abc7b47e5b77096faae14595c53724972da227434fc8f4b05ec8b"
 dependencies = [
  "bitflags",
+ "futures",
  "libc",
  "nix",
+ "tokio",
 ]
 
 [[package]]
@@ -278,6 +295,24 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "62b467343b94ba476dcb2500d242dadbb39557df889310ac77c5d99100aaac33"
 dependencies = [
  "libc",
+]
+
+[[package]]
+name = "house_light"
+version = "0.1.0"
+source = "git+https://github.com/melizalab/decide-rs?branch=components#f2660449b21bf9462f443930c18d0e831bff31bb"
+dependencies = [
+ "async-trait",
+ "chrono",
+ "decide-protocol",
+ "prost",
+ "prost-build",
+ "prost-types",
+ "serde",
+ "sun",
+ "sun-times",
+ "tokio",
+ "tracing",
 ]
 
 [[package]]
@@ -441,6 +476,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "num-integer"
+version = "0.1.44"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "d2cc698a63b549a70bc047073d2949cce27cd1c7b0a4a862d08a8031bc2801db"
+dependencies = [
+ "autocfg",
+ "num-traits",
+]
+
+[[package]]
 name = "num-traits"
 version = "0.2.14"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -497,6 +542,24 @@ dependencies = [
  "redox_syscall",
  "smallvec",
  "winapi",
+]
+
+[[package]]
+name = "peckboard"
+version = "0.1.0"
+source = "git+https://github.com/melizalab/decide-rs?branch=components#f2660449b21bf9462f443930c18d0e831bff31bb"
+dependencies = [
+ "async-trait",
+ "decide-protocol",
+ "futures",
+ "gpio-cdev",
+ "prost",
+ "prost-build",
+ "prost-types",
+ "serde",
+ "thiserror",
+ "tokio",
+ "tracing",
 ]
 
 [[package]]
@@ -718,6 +781,21 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "f2dd574626839106c320a323308629dcb1acfc96e32a8cba364ddc61ac23ee83"
 
 [[package]]
+name = "sun"
+version = "0.2.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "dfc29238f46800dc0e29dbc0b3cab5e745dd40560220f759e30d298740781b59"
+
+[[package]]
+name = "sun-times"
+version = "0.1.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "0abaea24076432ee036aa9faa615e6c565657693ea076fa7bb31249f6643eeb1"
+dependencies = [
+ "chrono",
+]
+
+[[package]]
 name = "syn"
 version = "1.0.86"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -769,6 +847,17 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "5516c27b78311c50bf42c071425c560ac799b11c30b31f87e3081965fe5e0180"
 dependencies = [
  "once_cell",
+]
+
+[[package]]
+name = "time"
+version = "0.1.44"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "6db9e6914ab8b1ae1c260a4ae7a49b6c5611b40328a735b21862567685e73255"
+dependencies = [
+ "libc",
+ "wasi",
+ "winapi",
 ]
 
 [[package]]
@@ -895,6 +984,12 @@ name = "valuable"
 version = "0.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "830b7e5d4d90034032940e4ace0d9a9a057e7a45cd94e6c007832e39edb82f6d"
+
+[[package]]
+name = "wasi"
+version = "0.10.0+wasi-snapshot-preview1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "1a143597ca7c7793eff794def352d41792a93c481eb1042423ff7ff72ba2c31f"
 
 [[package]]
 name = "which"

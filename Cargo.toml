@@ -7,6 +7,8 @@ edition = "2021"
 
 [dependencies]
 decide-protocol = {git = "https://github.com/melizalab/decide-rs", branch = "components"}
+house_light = {git = "https://github.com/melizalab/decide-rs", branch = "components"}
+peckboard = {git = "https://github.com/melizalab/decide-rs", branch = "components"}
 tmq = { version = "0.3", features = ["zmq-vendored"] }
 tokio = { version = "1.12", features = ["full"] }
 prost = "0.9"

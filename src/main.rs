@@ -1,12 +1,11 @@
-use decide_protocol::{ComponentRequest, proto, PUB_ENDPOINT, RequestType};
+use decide_protocol::{proto, PUB_ENDPOINT};
 use futures::stream::StreamExt;
+use house_light::proto as hl_proto;
+use peckboard::proto as pb_proto;
 use prost::Message;
-use prost_types::Any;
-use tmq::{Context, Multipart, publish, Result, subscribe};
+use tmq::{Context, subscribe};
 use tokio;
 use tracing;
-
-use decide_rs_lights::components_proto;
 
 #[tokio::main]
 async fn main() {
@@ -38,7 +37,7 @@ async fn main() {
                     let _topic = message.pop_front().unwrap();
                     let encoded_pub = message.pop_front().unwrap();
                     let decoded_pub = proto::Pub::decode(&encoded_pub[..]).expect("could not decode protobuf");
-                    components_proto::HouseLightState::decode(&*decoded_pub.state.unwrap().value)
+                    hl_proto::State::decode(&*decoded_pub.state.unwrap().value)
                     .expect("could not decode state change")})
                 .unwrap();
                 println!("Changed house-light state: switch {:?}, fake_clock {:?}, brightness {:?}", &hs_state.switch,  &hs_state.fake_clock, &hs_state.brightness)}
@@ -49,7 +48,7 @@ async fn main() {
                     let _topic = message.pop_front().unwrap();
                     let encoded_pub = message.pop_front().unwrap();
                     let decoded_pub = proto::Pub::decode(&encoded_pub[..]).expect("could not decode protobuf");
-                    components_proto::KeyState::decode(&*decoded_pub.state.unwrap().value)
+                    pb_proto::KeyState::decode(&*decoded_pub.state.unwrap().value)
                     .expect("could not decode state change")})
                 .unwrap();
                 println!("Changed peck-key state: left {:?}, center {:?}, right {:?}", &pb_state.peck_left,  &pb_state.peck_center, &pb_state.peck_right)}
