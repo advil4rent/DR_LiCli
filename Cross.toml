@@ -1,2 +1,2 @@
 [target.armv7-unknown-linux-gnueabihf]
-image = "decide_rs_light/image:tag"
+image = "rusty_2ac/image:tag"

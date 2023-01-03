@@ -1,22 +1,25 @@
 [package]
-name = "decide_rs_lights"
-version = "0.1.0"
+name = "rusty_2ac"
+version = "0.5.0"
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-decide-protocol = {git = "https://github.com/melizalab/decide-rs", branch = "components"}
-house_light = {git = "https://github.com/melizalab/decide-rs", branch = "components"}
-peckboard = {git = "https://github.com/melizalab/decide-rs", branch = "components"}
+decide-protocol = {git = "https://github.com/melizalab/decide-rs", branch = "components-shutdown"}
+house_light = {git = "https://github.com/melizalab/decide-rs", branch = "components-shutdown"}
+peckboard = {git = "https://github.com/melizalab/decide-rs", branch = "components-shutdown"}
+sound_alsa = {git = "https://github.com/melizalab/decide-rs", branch = "components-shutdown"}
+stepper_motor = {git = "https://github.com/melizalab/decide-rs", branch = "components-shutdown"}
+
 tmq = { version = "0.3", features = ["zmq-vendored"] }
 tokio = { version = "1.12", features = ["full"] }
-prost = "0.9"
-prost-types = "0.9"
+prost = "0.11.0"
+prost-types = "0.11.1"
 tracing = "0.1.30"
 tracing-subscriber = "0.3.3"
 
 futures = "0.3.17"
 
 [build-dependencies]
-prost-build = "0.9"
+prost-build = "0.11.1"
